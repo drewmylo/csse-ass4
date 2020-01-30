@@ -1,0 +1,26 @@
+OPTS=-std=gnu99 --pedantic -Wall -g 
+
+2310depot: depot.o listener.o error.o utils.o channel.o queue.o
+	gcc -pthread -o 2310depot depot.o listener.o error.o utils.o channel.o queue.o
+
+depot.o: depot.c depot.h error.h channel.h listener.h
+	gcc $(OPTS) -c depot.c
+
+listener.o: listener.c listener.h channel.h
+	gcc $(OPTS) -c listener.c
+
+error.o: error.c error.h
+	gcc $(OPTS) -c error.c
+
+utils.o: utils.c utils.h channel.h
+	gcc $(OPTS) -c utils.c
+
+channel.o: channel.c channel.h queue.h
+	gcc $(OPTS) -pthread -c channel.c
+
+queue.o: queue.c queue.h
+	gcc $(OPTS) -c queue.c
+
+
+clean:
+	rm -f depot.o error.o utils.o channel.o queue.o 2310depot
